@@ -8,6 +8,14 @@
   --color-secondary: #7A32B4;      /* tím */
   --black-deep: #0B0B0D;           /* nền đen tím */
   --black-soft: #121216;           /* sắc độ thứ hai */
+  --color-text-dark: #2E0A3D;
+  --color-bg-soft: #FFF4FA;
+}
+
+:root[data-theme="dark"] {
+  --color-text-dark: #F5F5F6;
+  --color-bg-soft: #140914;
+  /* ... */
 }
 
 /* BG chính: đen + halo tím/hồng/cam cực rõ */
