@@ -1,26 +1,63 @@
+
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* có sẵn từ trước nhưng nhắc lại để rõ */
+  --color-primary: #C0188C;        /* hồng */
+  --color-primary-light: #E042A3;  /* hồng sáng */
+  --color-secondary: #7A32B4;      /* tím */
+  --black-deep: #0B0B0D;           /* nền đen tím */
+  --black-soft: #121216;           /* sắc độ thứ hai */
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* BG chính: đen + halo tím/hồng/cam cực rõ */
+@utility threads-gradient {
+  background:
+    /* vệt tím mạnh góc phải trên */
+    radial-gradient(850px 520px at 110% -10%,
+      color-mix(in oklab, var(--color-secondary) 42%, transparent), transparent 62%),
+    /* vệt hồng mạnh góc trái trên */
+    radial-gradient(1000px 640px at -10% -10%,
+      color-mix(in oklab, var(--color-primary) 38%, transparent), transparent 65%),
+    /* vệt hồng-cam ở dưới (nhẹ hơn) */
+    radial-gradient(900px 560px at 50% 120%,
+      color-mix(in oklab, var(--color-primary-light) 32%, transparent), transparent 60%),
+    /* vignette tối viền để tạo chiều sâu */
+    radial-gradient(1200px 800px at 50% 50%, transparent 60%, rgba(0,0,0,0.45) 100%),
+    /* nền đen tím */
+    linear-gradient(180deg, var(--black-deep), var(--black-soft));
+  background-color: var(--black-deep);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Lưới chéo mờ (giống ref) — dùng kèm lớp trên */
+
+/* Bề mặt card nổi trên dark bg */
+@utility surface-dark {
+  @apply rounded-3xl p-8 md:p-10;
+  background: rgba(16,16,20,.6);
+  border: 1px solid rgba(255,255,255,.08);
+  backdrop-filter: blur(8px);
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@utility threads-grid {
+  position: relative;
+}
+
+/* pseudo-element viết CSS thuần, KHÔNG dùng @utility */
+.threads-grid::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  /* lưới chéo mờ giống ref */
+  background:
+    repeating-linear-gradient(135deg,
+      rgba(255,255,255,0.06) 0 1px, transparent 1px 38px),
+    repeating-linear-gradient(45deg,
+      rgba(255,255,255,0.04) 0 1px, transparent 1px 38px);
+
+  /* làm mờ dần ra rìa để không “phẳng” quá */
+  mask-image: radial-gradient(90% 70% at 60% 60%, rgba(0,0,0,0.7), transparent 75%);
+  opacity: .6;
 }
